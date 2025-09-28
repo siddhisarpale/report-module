@@ -1,22 +1,22 @@
-'use client'
-import { useState } from "react"
+"use client";
+import { useState } from "react";
 
-export default function Home() {
+export default function Page() {
   const [form, setForm] = useState({
-    title: '',
-    slug: '',
-    description: ''
+    title: "", 
+    slug: "", 
+    description: "" 
   });
 
   const [message, setMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setMessage(""); // Clear previous message
+    setMessage("");
 
-    const res = await fetch('/api/reports', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/admin/reports", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
 
@@ -25,15 +25,15 @@ export default function Home() {
       setForm({ title: '', slug: '', description: '' }); // Clear form
     } else {
       const data = await res.json();
-      setMessage(`Failed: ${data.error?.message || "Unknown error"}`); //parsed error response from the API || fallback msg incase of nomessage exist
+      setMessage(`Failed: ${data.error?.message || "Unknown error"}`);
     }
-  }
+
+}
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full">
-      <h1>Create Report</h1>
-
-      <form onSubmit={handleSubmit} >
+      <h1>Add New Report(Admin)</h1>
+      <form onSubmit={handleSubmit}>
         <input
           placeholder="Title"
           value={form.title}
@@ -52,12 +52,9 @@ export default function Home() {
           onChange={(e) => setForm({ ...form, description: e.target.value })}
           required
         />
-        <button type="submit" className="cursor-pointer pl-1.5">
-          Create Report
-        </button>
+        <button className="cursor-pointer pl-1.5" type="submit">Add Report</button>
       </form>
-      <br/>
-      {message && <p>{message}</p>}
+
     </div>
   );
 }
